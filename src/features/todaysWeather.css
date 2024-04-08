@@ -1,0 +1,23 @@
+.current-temperature {
+    color: #6C40B5;
+    font-size: 80px;
+    font-weight: bold;
+}
+
+.todays-weather p {
+    margin: 0;
+}
+
+.todays-weather {
+    margin-bottom: 20px;
+}
+
+.more-info {
+    display: flex;
+    justify-content: space-between;
+    color: #666666;
+}
+
+.more-info .state-country {
+    font-weight: bold;
+}

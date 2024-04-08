@@ -1,0 +1,15 @@
+.weather-info {
+    width: 100%;
+    top: 198px;
+    left: 370px;
+    border-radius: 40px;
+    border: 1px 0px 0px 0px;
+    background: #ffffff33;
+    margin-top: -205px;
+}
+
+.weather-info>.content-border {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 30px;
+}
