@@ -1,0 +1,19 @@
+.search-bar {
+    /* position: absolute; */
+    width: 620px;
+    height: 60px;
+    left: 370px;
+    top: 26px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    border: none;
+  }
+  
+  .search-button {
+    width: 60px;
+  height: 60px;
+  top: 26px;
+  left: 1010px;
+  border-radius: 20px 0px 0px 0px;
+  background: #6C40B5;
+  }
