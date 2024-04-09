@@ -1,103 +1,29 @@
 import "./searchBar.css";
-import { useEffect, useState, useCallback } from "react";
-import {
-	fetchLocationSuggestions,
-	getLocationCoordinates,
-} from "../utils/apis";
-import { debounce } from "lodash";
-import { useLocationSuggestionsStore } from "../contexts/locationSuggestionsContext";
-
-function getLocationFromUserInput(event) {
-	event.preventDefault();
-	const city = document.getElementById("cityInput").value;
-	const country = document.getElementById("countryInput").value;
-	console.log("city: ", city);
-	console.log("country: ", country);
-
-	getLocationCoordinates(city, country);
-}
+import { useState } from "react";
+import { getLocationCoordinates, getLocationWeather } from "../utils/apis";
+import { addSearchHistory } from "../contexts/searchHistoryStore";
+import { addTodaysWeather } from "../contexts/todaysWeatherStore";
 
 function SearchBar() {
 	const [cityInput, setCityInput] = useState("");
+	const [countryInput, setCountryInput] = useState("");
+	const [error, setError] = useState("");
 
-	const locationSuggestions = useLocationSuggestionsStore(
-		(state) => state.locations,
-	);
-
-	// useEffect(() => {
-	// 	const input = document.getElementById("cityInput");
-	// 	let userTypingTimeout = null;
-	// 	input.addEventListener("keyup", () => {
-	// 		clearTimeout(userTypingTimeout);
-	// 		userTypingTimeout = setTimeout(() => {
-	// 			console.log("User stopped typing");
-	// 			suggestLocations();
-	// 		}, 1000);
-	// 	});
-	// }, []);
-
-	// function suggestLocations() {
-	// 	console.log("suggest locations");
-	// 	console.log(cityInput);
-	// 	if (cityInput && cityInput.length > 2) {
-	// 		fetchLocationSuggestions(cityInput, setSuggestions);
-	// 	} else {
-	// 		setSuggestions([]);
-	// 	}
-	// }
-
-	// const debouncedSave = useCallback(
-	// 	debounce((newValue) => fetchLocationSuggestions(newValue), 1000),
-	// 	[],
-	// );
-
-	// useEffect(() => {
-	// 	console.log(debouncedSave);
-	// }, [debouncedSave]);
-
-	// function handleCityInputChange(newValue) {
-	// 	setCityInput(newValue);
-	// 	debouncedSave(newValue);
-	// }
-
-	useEffect(() => {
-		console.log(cityInput);
-		const debounceFn = setTimeout(() => {
-			if (cityInput && cityInput.length > 2) {
-				fetchLocationSuggestions(cityInput);
-			} else {
-				// useLocationSuggestionsStore.setState({
-				// 	locations: [],
-				// });
-				const suggestionsDiv = document.getElementById("suggestions");
-				suggestionsDiv.style.display = "hidden";
-			}
-		}, 1000);
-
-		return () => clearTimeout(debounceFn);
-	}, [cityInput]);
-
-	// useEffect(() => {
-	// 	const suggestionsDiv = document.getElementById("suggestions");
-	// 	if (!suggestions) {
-	// 		suggestionsDiv.style.display = "hidden";
-	// 	} else {
-	// 		suggestionsDiv.innerHTML = "";
-	// 		// biome-ignore lint/complexity/noForEach: <explanation>
-	// 		suggestions.forEach((suggestion) => {
-	// 			const div = document.createElement("div");
-	// 			div.textContent = suggestion.text;
-	// 			div.className = "suggestion";
-	// 			suggestionsDiv.appendChild(div);
-	// 			// div.addEventListener("click", handleSetSuggestion(suggestion.text));
-	// 		});
-	// 	}
-	// 	suggestionsDiv.style.display = "block";
-	// }, [suggestions]);
-
-	function handleCloseSuggestions(locationText) {
-		setCityInput(locationText);
-		document.getElementById("suggestions").style.display = "hidden";
+	async function handleUserSubmit(event) {
+		setError("");
+		event.preventDefault();
+		if (!cityInput || !countryInput) {
+			setError("Please input city and country fields!");
+			console.error("Please input both city and country fields!");
+			return;
+		}
+		const locationArray = await getLocationCoordinates(cityInput, countryInput);
+		const { lat, lon } = locationArray[0]; // Assumption: User inputs information correctly and API returns information of correct country first.
+		const weather = await getLocationWeather(lat, lon);
+		addTodaysWeather(weather);
+		addSearchHistory(weather);
+		setCityInput("");
+		setCountryInput("");
 	}
 
 	return (
@@ -117,39 +43,29 @@ function SearchBar() {
 						aria-label="Search for a city to view the current weather"
 						onChange={(e) => setCityInput(e.target.value)}
 					/>
-					<div id="suggestions">
-						{locationSuggestions?.map((location) => (
-							// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-							<div
-								className="suggestion"
-								onClick={handleCloseSuggestions(location.text)}
-							>
-								{location.text}
-							</div>
-						))}
-					</div>
 				</div>
 				<div className="country">
 					<label htmlFor="countryInput" className="search-label">
 						Country
 					</label>
 					<input
-						className="input"
 						type="search"
+						value={countryInput}
+						className="input"
 						id="countryInput"
 						name="countryInput"
 						placeholder="Search for a country"
 						aria-label="Search for a country to view the current weather"
+						onChange={(e) => setCountryInput(e.target.value)}
 					/>
 				</div>
 				<button
 					type="submit"
 					className="search-button"
-					onClick={getLocationFromUserInput}
-				>
-					Search
-				</button>
+					onClick={(e) => handleUserSubmit(e)}
+				/>
 			</div>
+			<div id="input-error">{error}</div>
 		</form>
 	);
 }
