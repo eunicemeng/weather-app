@@ -9,7 +9,7 @@ function SearchHistory() {
 					<div className="state-country">Johor, MY</div>
 					<div className="date-time">01-09-2022 09:41am</div>
 					<div className="requery-item" />
-					<div classname="delete-item" />
+					<div className="delete-item" />
 				</div>
 			</div>
 		</div>

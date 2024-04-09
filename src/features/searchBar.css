@@ -1,7 +1,19 @@
+.search-components {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.city,
+.country {
+  width: 280px;
+  height: 60px;
+}
+
 .search-label {
-  left: 13%;
-  top: 5%;
-  position: absolute;
+  left: 22px;
+  top: 23px;
+  position: relative;
   font-size: 10px;
   font-weight: 400;
   line-height: 13.62px;
@@ -10,9 +22,9 @@
 
 }
 
-.search-bar {
-  width: 620px;
-  height: 60px;
+.input {
+  width: 100%;
+  height: 100%;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   border: none;
@@ -20,8 +32,8 @@
   padding-top: 10px;
 }
 
-.search-bar:focus-visible {
-  width: 620px;
+.input:focus-visible {
+  width: 280px;
   height: 60px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 20px;
@@ -33,7 +45,9 @@
 .search-button {
   width: 60px;
   height: 60px;
-  border-radius: 20px 0px 0px 0px;
+  border-radius: 20px;
   background: #6C40B5;
   float: right;
+  margin-top: 20px;
+  border: none;
 }
