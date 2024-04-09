@@ -1,11 +1,18 @@
+#no-weather-to-display {
+    height: 175.5px;
+    margin-bottom: 20px;
+    padding-left: 5px;
+}
+
 .current-temperature {
     color: #6C40B5;
-    font-size: 80px;
+    font-size: 110px;
     font-weight: bold;
 }
 
 .todays-weather p {
     margin: 0;
+    padding: 0px 5px;
 }
 
 .todays-weather {
@@ -16,6 +23,8 @@
     display: flex;
     justify-content: space-between;
     color: #666666;
+    padding: 0px 5px;
+    margin-top: 8px;
 }
 
 .more-info .state-country {
