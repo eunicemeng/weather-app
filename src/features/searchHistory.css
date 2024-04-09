@@ -5,7 +5,11 @@
 }
 
 .search-history>.content-border {
-    padding: 20px;
+    padding: 25px 20px;
+}
+
+.search-history>.title {
+    padding: 0px 5px;
 }
 
 .previous-search-items {
@@ -17,8 +21,44 @@
     background: #FFFFFF66;
     align-items: center;
     padding: 0px 15px;
+    margin-top: 15px;
+    justify-content: space-between;
 }
 
-.previous-search-items .state-country {
-    flex-basis: 200px;
+.previous-search-items>.state-country {
+    flex-grow: 5;
+}
+
+#date-time {
+    font-size: 14px;
+}
+
+#search-history-right-side {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-history-button {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 4px 12px 0px #0000001A;
+    border: none;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+
+}
+
+#requery {
+    background-image: url('../assets/searchGrey.svg');
+}
+
+#delete {
+    background-image: url('../assets/delete.svg');
 }
