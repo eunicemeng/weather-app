@@ -1,46 +1,37 @@
-import { useLocationSuggestionsStore } from "../contexts/locationSuggestionsContext";
+const app_key = process.env.REACT_APP_OPEN_WEATHER_API_KEY;
 
-export async function getLocationCoordinates() {
+export async function getLocationCoordinates(city, country) {
 	const requestOptions = {
 		method: "GET",
 	};
 
 	try {
 		const response = await fetch(
-			"http://api.openweathermap.org/geo/1.0/direct?q=Osaka,JP&limit=50&appid=30c15dbd58130a40f87f4ef62869590a",
+			`http://api.openweathermap.org/geo/1.0/direct?q=${city},${country}&limit=5&appid=${app_key}`,
 			requestOptions,
 		);
 		const responseBody = await response.json();
-	} catch {}
-
-	// fetch(
-	// 	"http://api.openweathermap.org/geo/1.0/direct?q=Osaka,JP&limit=50&appid=30c15dbd58130a40f87f4ef62869590a",
-	// 	requestOptions,
-	// )
-	// 	.then((response) => response.text())
-	// 	.then((result) => console.log(result))
-	// 	.catch((error) => console.error(error));
+		console.log(responseBody);
+		return responseBody;
+	} catch (e) {
+		console.error("Failed to retreive location coordinates. Error: ", e);
+	}
 }
 
-export async function fetchLocationSuggestions(cityInput) {
+export async function getLocationWeather(lat, lon) {
 	const requestOptions = {
 		method: "GET",
 	};
-	const response = await fetch(
-		`http://api.openweathermap.org/geo/1.0/direct?q=${cityInput}&limit=5&appid=30c15dbd58130a40f87f4ef62869590a`,
-		requestOptions,
-	);
-	const queryResult = await response.json();
-	const locationSuggestions = queryResult.map((location) => {
-		location.local_names = undefined;
-		location.text = location.state
-			? `${location.name}, ${location.state}, ${location.country}`
-			: `${location.name}, ${location.country}`;
-		return location;
-	});
-	console.log("locationSuggestions: ", locationSuggestions);
-	useLocationSuggestionsStore.setState({
-		locations: locationSuggestions,
-	});
-	// return locationSuggestions;
+
+	try {
+		const response = await fetch(
+			`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${app_key}`,
+			requestOptions,
+		);
+		const responseBody = await response.json();
+		console.log(responseBody);
+		return responseBody;
+	} catch (e) {
+		console.error("Failed to retrieve location weather. Error: ", e);
+	}
 }
